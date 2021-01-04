@@ -64,7 +64,7 @@ public class ShoppingListTest {
 
         ListPage listPage = addItemToList();
 
-        //TODO assert
+        assertThat(listPage.firstItemNameTextView.getText()).isEqualTo("Milk");
     }
 
     @Test
@@ -99,6 +99,11 @@ public class ShoppingListTest {
 
     @Test
     public void checkTotal(){
+        //TODO
+    }
+
+    @Test
+    public void markItemAsBought(){
         //TODO
     }
 
