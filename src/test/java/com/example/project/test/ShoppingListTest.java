@@ -62,7 +62,7 @@ public class ShoppingListTest {
 
         waitForListPageToLoad();
 
-        ListPage listPage = addItemToList();
+        ListPage listPage = addItemToList("Milk", "1.2", "2", "4", "2");
 
         assertThat(listPage.firstItemNameTextView.getText()).isEqualTo("Milk");
     }
@@ -73,14 +73,15 @@ public class ShoppingListTest {
 
         waitForListPageToLoad();
 
-        ListPage listPage = addItemToList()
+        ListPage listPage = addItemToList("Milk", "1.2", "2", "4", "2")
                 .longPressOnFirstItem()
                 .clickOnEdit()
                 .enterComment("3% fat")
                 .enterPrice("1.3")
                 .saveItem();
 
-        //TODO assert
+        assertThat(listPage.firstItemPriceTextView.getText()).isEqualTo("1.3 £");
+        assertThat(listPage.firstItemCommentTextView.getText()).isEqualTo("3% fat");
     }
 
     @Test
@@ -89,7 +90,7 @@ public class ShoppingListTest {
 
         waitForListPageToLoad();
 
-        ListPage listPage = addItemToList()
+        ListPage listPage = addItemToList("Milk", "1.2", "2", "4", "2")
                 .longPressOnFirstItem()
                 .clickOnRemove().
                         confirmRemoval();
@@ -98,12 +99,12 @@ public class ShoppingListTest {
     }
 
     @Test
-    public void checkTotal(){
+    public void checkTotal() {
         //TODO
     }
 
     @Test
-    public void markItemAsBought(){
+    public void markItemAsBought() {
         //TODO
     }
 
@@ -116,13 +117,13 @@ public class ShoppingListTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("com.slava.buylist:id/editText1")));
     }
 
-    private ListPage addItemToList() {
+    private ListPage addItemToList(String name, String price, String amount, String unit, String category) {
         return new ListPage(driver)
-                .enterItemName("Milk")
-                .enterPrice("1.2")
-                .enterAmount("2")
-                .chooseUnit("4")
-                .chooseCategory("2")
+                .enterItemName(name)
+                .enterPrice(price)
+                .enterAmount(amount)
+                .chooseUnit(unit)
+                .chooseCategory(category)
                 .clickAddItemButton();
     }
 

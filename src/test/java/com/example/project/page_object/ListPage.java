@@ -26,6 +26,10 @@ public class ListPage {
     private AndroidElement firstItemRelativeLayout;
     @AndroidFindBy(xpath = "//android.widget.ListView/android.widget.RelativeLayout//android.widget.TextView[1]")
     public AndroidElement firstItemNameTextView;
+    @AndroidFindBy(xpath = "//android.widget.ListView/android.widget.RelativeLayout//android.widget.TextView[4]")
+    public AndroidElement firstItemPriceTextView;
+    @AndroidFindBy(xpath = "//android.widget.ListView/android.widget.RelativeLayout//android.widget.TextView[2]")
+    public AndroidElement firstItemCommentTextView;
     @AndroidFindBy(xpath = "//android.widget.ListView/android.widget.LinearLayout[3]")
     private AndroidElement editItemLinearLayout;
     @AndroidFindBy(id = "editText2")
