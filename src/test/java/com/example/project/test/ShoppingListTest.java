@@ -48,19 +48,16 @@ public class ShoppingListTest {
 
     @Test
     public void createNewList_successful() {
-        AllListsPage allListsPage = new AllListsPage(driver);
-        allListsPage.enterNewListName("New list")
-                .clickCreateNewListButton();
+        final String listName = "New list";
+        AllListsPage allListsPage = createNewList(listName);
         driver.navigate().back();
         driver.navigate().back();
-        assertThat(allListsPage.firstListName.getText()).isEqualTo("New list");
+        assertThat(allListsPage.firstListName.getText()).isEqualTo(listName);
     }
 
     @Test
     public void addItemToList() {
-        AllListsPage allListsPage = new AllListsPage(driver);
-        allListsPage.enterNewListName("New list")
-                .clickCreateNewListButton();
+        AllListsPage allListsPage = createNewList("New list");
 
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("com.slava.buylist:id/editText1")));
@@ -76,9 +73,7 @@ public class ShoppingListTest {
 
     @Test
     public void editItem() {
-        AllListsPage allListsPage = new AllListsPage(driver);
-        allListsPage.enterNewListName("New list")
-                .clickCreateNewListButton();
+        AllListsPage allListsPage = createNewList("New list");
 
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("com.slava.buylist:id/editText1")));
@@ -99,9 +94,7 @@ public class ShoppingListTest {
 
     @Test
     public void removeItem() {
-        AllListsPage allListsPage = new AllListsPage(driver);
-        allListsPage.enterNewListName("New list")
-                .clickCreateNewListButton();
+        AllListsPage allListsPage = createNewList("New list");
 
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("com.slava.buylist:id/editText1")));
@@ -118,6 +111,8 @@ public class ShoppingListTest {
                 confirmRemoval();
     }
 
-
+    private AllListsPage createNewList(String listName) {
+        return new AllListsPage(driver).enterNewListName(listName).clickCreateNewListButton();
+    }
 }
 
