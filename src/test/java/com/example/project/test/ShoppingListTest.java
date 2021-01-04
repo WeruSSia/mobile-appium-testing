@@ -56,11 +56,10 @@ public class ShoppingListTest {
     }
 
     @Test
-    public void addItemToList() {
+    public void addItemToList_successful() {
         AllListsPage allListsPage = createNewList("New list");
 
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("com.slava.buylist:id/editText1")));
+        waitForListPageToLoad();
 
         ListPage listPage = new ListPage(driver);
         listPage.enterItemName("Milk")
@@ -75,8 +74,7 @@ public class ShoppingListTest {
     public void editItem() {
         AllListsPage allListsPage = createNewList("New list");
 
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("com.slava.buylist:id/editText1")));
+        waitForListPageToLoad();
 
         ListPage listPage = new ListPage(driver);
         listPage.enterItemName("Milk")
@@ -96,8 +94,7 @@ public class ShoppingListTest {
     public void removeItem() {
         AllListsPage allListsPage = createNewList("New list");
 
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("com.slava.buylist:id/editText1")));
+        waitForListPageToLoad();
 
         ListPage listPage = new ListPage(driver);
         listPage.enterItemName("Milk")
@@ -114,5 +111,11 @@ public class ShoppingListTest {
     private AllListsPage createNewList(String listName) {
         return new AllListsPage(driver).enterNewListName(listName).clickCreateNewListButton();
     }
+
+    private void waitForListPageToLoad() {
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("com.slava.buylist:id/editText1")));
+    }
+
 }
 
