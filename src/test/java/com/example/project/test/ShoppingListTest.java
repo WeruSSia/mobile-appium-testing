@@ -47,10 +47,11 @@ public class ShoppingListTest {
     }
 
     @Test
-    public void createNewList_successful() {
+    public void createNewList_successful() throws InterruptedException {
         final String listName = "New list";
         AllListsPage allListsPage = createNewList(listName);
-        driver.navigate().back();
+        Thread.sleep(2000);
+        driver.hideKeyboard();
         driver.navigate().back();
         assertThat(allListsPage.firstListName.getText()).isEqualTo(listName);
     }
@@ -61,13 +62,9 @@ public class ShoppingListTest {
 
         waitForListPageToLoad();
 
-        ListPage listPage = new ListPage(driver);
-        listPage.enterItemName("Milk")
-                .enterPrice("1.2")
-                .enterAmount("2")
-                .chooseUnit("4")
-                .chooseCategory("2")
-                .clickAddItemButton();
+        ListPage listPage = addItemToList();
+
+        //TODO assert
     }
 
     @Test
@@ -76,18 +73,14 @@ public class ShoppingListTest {
 
         waitForListPageToLoad();
 
-        ListPage listPage = new ListPage(driver);
-        listPage.enterItemName("Milk")
-                .enterPrice("1.2")
-                .enterAmount("2")
-                .chooseUnit("4")
-                .chooseCategory("2")
-                .clickAddItemButton()
+        ListPage listPage = addItemToList()
                 .longPressOnFirstItem()
                 .clickOnEdit()
                 .enterComment("3% fat")
                 .enterPrice("1.3")
                 .saveItem();
+
+        //TODO assert
     }
 
     @Test
@@ -96,16 +89,17 @@ public class ShoppingListTest {
 
         waitForListPageToLoad();
 
-        ListPage listPage = new ListPage(driver);
-        listPage.enterItemName("Milk")
-                .enterPrice("1.2")
-                .enterAmount("2")
-                .chooseUnit("4")
-                .chooseCategory("2")
-                .clickAddItemButton()
+        ListPage listPage = addItemToList()
                 .longPressOnFirstItem()
                 .clickOnRemove().
-                confirmRemoval();
+                        confirmRemoval();
+
+        //TODO assert
+    }
+
+    @Test
+    public void checkTotal(){
+        //TODO
     }
 
     private AllListsPage createNewList(String listName) {
@@ -115,6 +109,16 @@ public class ShoppingListTest {
     private void waitForListPageToLoad() {
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("com.slava.buylist:id/editText1")));
+    }
+
+    private ListPage addItemToList() {
+        return new ListPage(driver)
+                .enterItemName("Milk")
+                .enterPrice("1.2")
+                .enterAmount("2")
+                .chooseUnit("4")
+                .chooseCategory("2")
+                .clickAddItemButton();
     }
 
 }
