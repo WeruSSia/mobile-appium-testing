@@ -23,7 +23,9 @@ public class ListPage {
     @AndroidFindBy(id = "editText1")
     private AndroidElement addItemEditText;
     @AndroidFindBy(xpath = "//android.widget.ListView/android.widget.RelativeLayout")
-    private AndroidElement firstItem;
+    private AndroidElement firstItemRelativeLayout;
+    @AndroidFindBy(xpath = "//android.widget.ListView/android.widget.RelativeLayout//android.widget.TextView[1]")
+    public AndroidElement firstItemNameTextView;
     @AndroidFindBy(xpath = "//android.widget.ListView/android.widget.LinearLayout[3]")
     private AndroidElement editItemLinearLayout;
     @AndroidFindBy(id = "editText2")
@@ -86,7 +88,7 @@ public class ListPage {
     public ListPage longPressOnFirstItem() {
         new TouchAction(driver)
                 .longPress(new LongPressOptions()
-                        .withElement(ElementOption.element(firstItem))
+                        .withElement(ElementOption.element(firstItemRelativeLayout))
                         .withDuration(Duration.ofMillis(2000)))
                 .release()
                 .perform();
