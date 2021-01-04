@@ -46,7 +46,7 @@ public class ListPage {
     private AndroidElement saveItemButton;
     @AndroidFindBy(xpath = "//android.widget.ListView/android.widget.LinearLayout[4]")
     private AndroidElement removeItemLinearLayout;
-    @AndroidFindBy(id = "button1")
+    @AndroidFindBy(id = "android:id/button1")
     private AndroidElement confirmRemovalButton;
 
     public ListPage enterPrice(String price) {
