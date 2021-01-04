@@ -19,6 +19,8 @@ public class AllListsPage {
     private AndroidElement newListNameEditText;
     @AndroidFindBy(id = "button2")
     private AndroidElement createListButton;
+    @AndroidFindBy(id = "title")
+    public AndroidElement firstListName;
 
     public AllListsPage enterNewListName(String newListName) {
         newListNameEditText.sendKeys(newListName);
