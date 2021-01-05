@@ -5,6 +5,7 @@ import com.example.project.page_object.ListPage;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,6 +18,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class ShoppingListTest {
 
@@ -94,6 +96,10 @@ public class ShoppingListTest {
                 .longPressOnFirstItem()
                 .clickOnRemove().
                         confirmRemoval();
+
+        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> {
+            driver.findElementByXPath("//android.widget.ListView/android.widget.RelativeLayout");
+        });
     }
 
     @Test
@@ -103,7 +109,7 @@ public class ShoppingListTest {
         waitForListPageToLoad();
 
         ListPage listPage = addItemToList("Milk", "1.2", "2", "4", "2");
-        listPage = addItemToList("Butter","3","1","1","2");
+        listPage = addItemToList("Butter", "3", "1", "1", "2");
 
         driver.hideKeyboard();
         driver.navigate().back();
@@ -117,12 +123,12 @@ public class ShoppingListTest {
     }
 
     @Test
-    public void removeList(){
+    public void removeList() {
         //TODO
     }
 
     @Test
-    public void editListName(){
+    public void editListName() {
 
     }
 
