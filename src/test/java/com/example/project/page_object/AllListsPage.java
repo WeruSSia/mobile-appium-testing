@@ -33,4 +33,8 @@ public class AllListsPage {
         createListButton.click();
         return this;
     }
+
+    public AllListsPage createNewList(String listName) {
+        return this.enterNewListName(listName).clickCreateNewListButton();
+    }
 }

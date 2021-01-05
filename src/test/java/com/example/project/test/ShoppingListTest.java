@@ -4,11 +4,8 @@ import com.example.project.page_object.AllListsPage;
 import com.example.project.page_object.ListPage;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -51,31 +48,36 @@ public class ShoppingListTest {
     @Test
     public void testCreateNewList() throws InterruptedException {
         final String listName = "New list";
-        AllListsPage allListsPage = createNewList(listName);
+        AllListsPage allListsPage = new AllListsPage(driver);
+        allListsPage.createNewList(listName);
+
         Thread.sleep(2000);
         driver.hideKeyboard();
         driver.navigate().back();
+
         assertThat(allListsPage.firstListNameTextView.getText()).isEqualTo(listName);
     }
 
     @Test
     public void testAddItemToList() {
-        createNewList("New list");
+        AllListsPage allListsPage = new AllListsPage(driver);
+        allListsPage.createNewList("New list");
 
-        waitForListPageToLoad();
-
-        ListPage listPage = addItemToList("Milk", "1.2", "2", "4", "2");
+        ListPage listPage = new ListPage(driver);
+        listPage.waitForListPageToLoad()
+                .addItemToList("Milk", "1.2", "2", "4", "2");
 
         assertThat(listPage.firstItemNameTextView.getText()).isEqualTo("Milk");
     }
 
     @Test
     public void testEditItem() {
-        createNewList("New list");
+        AllListsPage allListsPage = new AllListsPage(driver);
+        allListsPage.createNewList("New list");
 
-        waitForListPageToLoad();
-
-        ListPage listPage = addItemToList("Milk", "1.2", "2", "4", "2")
+        ListPage listPage = new ListPage(driver);
+        listPage.waitForListPageToLoad()
+                .addItemToList("Milk", "1.2", "2", "4", "2")
                 .longPressOnFirstItem()
                 .clickOnEdit()
                 .enterComment("3% fat")
@@ -88,11 +90,12 @@ public class ShoppingListTest {
 
     @Test
     public void testRemoveItem() {
-        createNewList("New list");
+        AllListsPage allListsPage = new AllListsPage(driver);
+        allListsPage.createNewList("New list");
 
-        waitForListPageToLoad();
-
-        addItemToList("Milk", "1.2", "2", "4", "2")
+        ListPage listPage = new ListPage(driver);
+        listPage.waitForListPageToLoad()
+                .addItemToList("Milk", "1.2", "2", "4", "2")
                 .longPressOnFirstItem()
                 .clickOnRemove().
                 confirmRemoval();
@@ -102,36 +105,18 @@ public class ShoppingListTest {
 
     @Test
     public void testCheckTotal() {
-        AllListsPage allListsPage = createNewList("New list");
+        AllListsPage allListsPage = new AllListsPage(driver);
+        allListsPage.createNewList("New list");
 
-        waitForListPageToLoad();
-
-        addItemToList("Milk", "1.2", "2", "4", "2");
-        addItemToList("Butter", "3", "1", "1", "2");
+        ListPage listPage = new ListPage(driver);
+        listPage.waitForListPageToLoad()
+                .addItemToList("Milk", "1.2", "2", "4", "2")
+                .addItemToList("Butter", "3", "1", "1", "2");
 
         driver.hideKeyboard();
         driver.navigate().back();
 
         assertThat(allListsPage.firstListInformationTextView.getText()).contains("Sum: 5.4 £");
-    }
-
-    private AllListsPage createNewList(String listName) {
-        return new AllListsPage(driver).enterNewListName(listName).clickCreateNewListButton();
-    }
-
-    private void waitForListPageToLoad() {
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("com.slava.buylist:id/editText1")));
-    }
-
-    private ListPage addItemToList(String name, String price, String amount, String unit, String category) {
-        return new ListPage(driver)
-                .enterItemName(name)
-                .enterPrice(price)
-                .enterAmount(amount)
-                .chooseUnit(unit)
-                .chooseCategory(category)
-                .clickAddItemButton();
     }
 
 }

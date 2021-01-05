@@ -7,7 +7,10 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.offset.ElementOption;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
@@ -121,6 +124,22 @@ public class ListPage {
 
     public ListPage confirmRemoval() {
         confirmRemovalButton.click();
+        return this;
+    }
+
+    public ListPage addItemToList(String name, String price, String amount, String unit, String category) {
+        return this
+                .enterItemName(name)
+                .enterPrice(price)
+                .enterAmount(amount)
+                .chooseUnit(unit)
+                .chooseCategory(category)
+                .clickAddItemButton();
+    }
+
+    public ListPage waitForListPageToLoad() {
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.visibilityOf(addItemEditText));
         return this;
     }
 
