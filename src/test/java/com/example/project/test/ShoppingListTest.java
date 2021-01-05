@@ -94,18 +94,36 @@ public class ShoppingListTest {
                 .longPressOnFirstItem()
                 .clickOnRemove().
                         confirmRemoval();
-
-        //TODO assert
     }
 
     @Test
     public void checkTotal() {
-        //TODO
+        AllListsPage allListsPage = createNewList("New list");
+
+        waitForListPageToLoad();
+
+        ListPage listPage = addItemToList("Milk", "1.2", "2", "4", "2");
+        listPage = addItemToList("Butter","3","1","1","2");
+
+        driver.hideKeyboard();
+        driver.navigate().back();
+
+        assertThat(allListsPage.firstListInformationTextView.getText()).contains("Sum: 5.4 £");
     }
 
     @Test
     public void markItemAsBought() {
         //TODO
+    }
+
+    @Test
+    public void removeList(){
+        //TODO
+    }
+
+    @Test
+    public void editListName(){
+
     }
 
     private AllListsPage createNewList(String listName) {
