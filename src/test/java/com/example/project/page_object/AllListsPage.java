@@ -20,8 +20,8 @@ public class AllListsPage {
     @AndroidFindBy(id = "button2")
     private AndroidElement createListButton;
     @AndroidFindBy(id = "title")
-    public AndroidElement firstListName;
-    @AndroidFindBy(id="str1")
+    public AndroidElement firstListNameTextView;
+    @AndroidFindBy(id = "str1")
     public AndroidElement firstListInformationTextView;
 
     public AllListsPage enterNewListName(String newListName) {

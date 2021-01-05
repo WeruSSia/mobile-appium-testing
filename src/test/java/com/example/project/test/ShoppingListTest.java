@@ -36,7 +36,7 @@ public class ShoppingListTest {
         cap.setCapability("appActivity", "com.slava.buylist.MainActivity");
 
         URL url = new URL("http://127.0.0.1:4723/wd/hub");
-        driver = new AndroidDriver<AndroidElement>(url, cap);
+        driver = new AndroidDriver<>(url, cap);
 
         driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
     }
@@ -55,12 +55,12 @@ public class ShoppingListTest {
         Thread.sleep(2000);
         driver.hideKeyboard();
         driver.navigate().back();
-        assertThat(allListsPage.firstListName.getText()).isEqualTo(listName);
+        assertThat(allListsPage.firstListNameTextView.getText()).isEqualTo(listName);
     }
 
     @Test
     public void addItemToList_successful() {
-        AllListsPage allListsPage = createNewList("New list");
+        createNewList("New list");
 
         waitForListPageToLoad();
 
@@ -71,7 +71,7 @@ public class ShoppingListTest {
 
     @Test
     public void editItem() {
-        AllListsPage allListsPage = createNewList("New list");
+        createNewList("New list");
 
         waitForListPageToLoad();
 
@@ -88,18 +88,16 @@ public class ShoppingListTest {
 
     @Test
     public void removeItem() {
-        AllListsPage allListsPage = createNewList("New list");
+        createNewList("New list");
 
         waitForListPageToLoad();
 
-        ListPage listPage = addItemToList("Milk", "1.2", "2", "4", "2")
+        addItemToList("Milk", "1.2", "2", "4", "2")
                 .longPressOnFirstItem()
                 .clickOnRemove().
-                        confirmRemoval();
+                confirmRemoval();
 
-        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> {
-            driver.findElementByXPath("//android.widget.ListView/android.widget.RelativeLayout");
-        });
+        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> driver.findElementByXPath("//android.widget.ListView/android.widget.RelativeLayout"));
     }
 
     @Test
@@ -108,28 +106,13 @@ public class ShoppingListTest {
 
         waitForListPageToLoad();
 
-        ListPage listPage = addItemToList("Milk", "1.2", "2", "4", "2");
-        listPage = addItemToList("Butter", "3", "1", "1", "2");
+        addItemToList("Milk", "1.2", "2", "4", "2");
+        addItemToList("Butter", "3", "1", "1", "2");
 
         driver.hideKeyboard();
         driver.navigate().back();
 
         assertThat(allListsPage.firstListInformationTextView.getText()).contains("Sum: 5.4 £");
-    }
-
-    @Test
-    public void markItemAsBought() {
-        //TODO
-    }
-
-    @Test
-    public void removeList() {
-        //TODO
-    }
-
-    @Test
-    public void editListName() {
-
     }
 
     private AllListsPage createNewList(String listName) {
