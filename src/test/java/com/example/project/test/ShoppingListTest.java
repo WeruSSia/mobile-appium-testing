@@ -49,7 +49,7 @@ public class ShoppingListTest {
     }
 
     @Test
-    public void createNewList_successful() throws InterruptedException {
+    public void testCreateNewList() throws InterruptedException {
         final String listName = "New list";
         AllListsPage allListsPage = createNewList(listName);
         Thread.sleep(2000);
@@ -59,7 +59,7 @@ public class ShoppingListTest {
     }
 
     @Test
-    public void addItemToList_successful() {
+    public void testAddItemToList() {
         createNewList("New list");
 
         waitForListPageToLoad();
@@ -70,7 +70,7 @@ public class ShoppingListTest {
     }
 
     @Test
-    public void editItem() {
+    public void testEditItem() {
         createNewList("New list");
 
         waitForListPageToLoad();
@@ -87,7 +87,7 @@ public class ShoppingListTest {
     }
 
     @Test
-    public void removeItem() {
+    public void testRemoveItem() {
         createNewList("New list");
 
         waitForListPageToLoad();
@@ -101,7 +101,7 @@ public class ShoppingListTest {
     }
 
     @Test
-    public void checkTotal() {
+    public void testCheckTotal() {
         AllListsPage allListsPage = createNewList("New list");
 
         waitForListPageToLoad();
