@@ -1,5 +1,6 @@
 package com.example.project.page_object;
 
+import com.example.project.item.Item;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -127,24 +128,19 @@ public class ListPage {
         return this;
     }
 
-    public ListPage addItemToList(String name, String price, String amount, String unit, String category) {
+    public ListPage addItemToList(Item item) {
         return this
-                .enterItemName(name)
-                .enterPrice(price)
-                .enterAmount(amount)
-                .chooseUnit(unit)
-                .chooseCategory(category)
+                .enterItemName(item.getName())
+                .enterPrice(String.valueOf(item.getPrice()))
+                .enterAmount(String.valueOf(item.getAmount()))
+                .chooseUnit(String.valueOf(item.getUnitIndex()))
+                .chooseCategory(String.valueOf(item.getCategoryIndex()))
                 .clickAddItemButton();
     }
 
     public ListPage waitForListPageToLoad() {
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-        wait.until(ExpectedConditions.visibilityOf(addItemEditText));
-        return this;
-    }
-
-    public ListPage goBackToAllListsPage(){
-        driver.navigate().back();
+        WebDriverWait wait = new WebDriverWait(this.driver, 20);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("editText1")));
         return this;
     }
 

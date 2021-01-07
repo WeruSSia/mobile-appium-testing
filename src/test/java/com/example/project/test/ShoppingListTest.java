@@ -1,5 +1,6 @@
 package com.example.project.test;
 
+import com.example.project.item.Item;
 import com.example.project.page_object.AllListsPage;
 import com.example.project.page_object.ListPage;
 import io.appium.java_client.android.AndroidDriver;
@@ -16,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.InstanceOfAssertFactories.list;
 
 public class ShoppingListTest {
 
@@ -50,13 +50,12 @@ public class ShoppingListTest {
     }
 
     @Test
-    public void testCreateNewList() throws InterruptedException {
+    public void testCreateNewList() {
         final String listName = "New list";
         AllListsPage allListsPage = new AllListsPage(driver);
         allListsPage.createNewList(listName);
 
-        ListPage listPage = new ListPage(driver);
-        listPage.goBackToAllListsPage();
+        driver.navigate().back();
 
         assertThat(allListsPage.firstListNameTextView.getText()).isEqualTo(listName);
     }
@@ -68,7 +67,7 @@ public class ShoppingListTest {
 
         ListPage listPage = new ListPage(driver);
         listPage.waitForListPageToLoad()
-                .addItemToList("Milk", "1.2", "2", "4", "2");
+                .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build());
 
         assertThat(listPage.firstItemNameTextView.getText()).isEqualTo("Milk");
     }
@@ -80,7 +79,7 @@ public class ShoppingListTest {
 
         ListPage listPage = new ListPage(driver);
         listPage.waitForListPageToLoad()
-                .addItemToList("Milk", "1.2", "2", "4", "2")
+                .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build())
                 .longPressOnFirstItem()
                 .clickOnEdit()
                 .enterComment("3% fat")
@@ -98,7 +97,7 @@ public class ShoppingListTest {
 
         ListPage listPage = new ListPage(driver);
         listPage.waitForListPageToLoad()
-                .addItemToList("Milk", "1.2", "2", "4", "2")
+                .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build())
                 .longPressOnFirstItem()
                 .clickOnRemove().
                 confirmRemoval();
@@ -113,8 +112,8 @@ public class ShoppingListTest {
 
         ListPage listPage = new ListPage(driver);
         listPage.waitForListPageToLoad()
-                .addItemToList("Milk", "1.2", "2", "4", "2")
-                .addItemToList("Butter", "3", "1", "1", "2");
+                .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build())
+                .addItemToList(Item.builder().name("Butter").price(3).amount(1).unitIndex(1).categoryIndex(2).build());
 
         driver.hideKeyboard();
         driver.navigate().back();
