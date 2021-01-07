@@ -143,4 +143,9 @@ public class ListPage {
         return this;
     }
 
+    public ListPage goBackToAllListsPage(){
+        driver.navigate().back();
+        return this;
+    }
+
 }

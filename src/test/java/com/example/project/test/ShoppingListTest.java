@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.InstanceOfAssertFactories.list;
 
 public class ShoppingListTest {
 
@@ -31,6 +32,9 @@ public class ShoppingListTest {
 
         cap.setCapability("appPackage", "com.slava.buylist");
         cap.setCapability("appActivity", "com.slava.buylist.MainActivity");
+
+        cap.setCapability("unicodeKeyboard", true);
+        cap.setCapability("resetKeyboard", true);
 
         URL url = new URL("http://127.0.0.1:4723/wd/hub");
         driver = new AndroidDriver<>(url, cap);
@@ -51,9 +55,8 @@ public class ShoppingListTest {
         AllListsPage allListsPage = new AllListsPage(driver);
         allListsPage.createNewList(listName);
 
-        Thread.sleep(2000);
-        driver.hideKeyboard();
-        driver.navigate().back();
+        ListPage listPage = new ListPage(driver);
+        listPage.goBackToAllListsPage();
 
         assertThat(allListsPage.firstListNameTextView.getText()).isEqualTo(listName);
     }
