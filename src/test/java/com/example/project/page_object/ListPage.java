@@ -9,9 +9,12 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
 import java.time.Duration;
 
@@ -69,15 +72,16 @@ public class ListPage {
         return this;
     }
 
-    public ListPage chooseUnit(String index) {
+    public ListPage chooseUnit(String index, Wait wait) {
         unitSpinner.click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.widget.CheckedTextView[" + index + "]")));
         unitChoiceFrameLayout.findElementByXPath("//android.widget.CheckedTextView[" + index + "]").click();
         return this;
     }
 
-    public ListPage chooseCategory(String index) {
+    public ListPage chooseCategory(String index, Wait wait) {
         categorySpinner.click();
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.widget.CheckedTextView[" + index + "]")));
         categoryChoiceFrameLayout.findElementByXPath("//android.widget.CheckedTextView[" + index + "]").click();
         return this;
     }
@@ -128,18 +132,17 @@ public class ListPage {
         return this;
     }
 
-    public ListPage addItemToList(Item item) {
+    public ListPage addItemToList(Item item, Wait wait) {
         return this
                 .enterItemName(item.getName())
                 .enterPrice(String.valueOf(item.getPrice()))
                 .enterAmount(String.valueOf(item.getAmount()))
-                .chooseUnit(String.valueOf(item.getUnitIndex()))
-                .chooseCategory(String.valueOf(item.getCategoryIndex()))
+                .chooseUnit(String.valueOf(item.getUnitIndex()), wait)
+                .chooseCategory(String.valueOf(item.getCategoryIndex()), wait)
                 .clickAddItemButton();
     }
 
-    public ListPage waitForListPageToLoad() {
-        WebDriverWait wait = new WebDriverWait(this.driver, 20);
+    public ListPage waitForListPageToLoad(Wait wait) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("editText1")));
         return this;
     }

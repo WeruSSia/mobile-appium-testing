@@ -6,13 +6,17 @@ import com.example.project.page_object.ListPage;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 public class ShoppingListTest {
 
     AndroidDriver<AndroidElement> driver;
+    Wait wait;
 
     @BeforeClass
     public void setUp() throws MalformedURLException {
@@ -40,6 +45,12 @@ public class ShoppingListTest {
         driver = new AndroidDriver<>(url, cap);
 
         driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+
+        wait = new FluentWait(driver)
+                .withTimeout(Duration.ofSeconds(20))
+                .pollingEvery(Duration.ofMillis(250))
+                .ignoring(NoSuchElementException.class)
+                .ignoring(TimeoutException.class);
     }
 
     @BeforeMethod
@@ -55,7 +66,12 @@ public class ShoppingListTest {
         AllListsPage allListsPage = new AllListsPage(driver);
         allListsPage.createNewList(listName);
 
+        ListPage listPage = new ListPage(driver);
+        listPage.waitForListPageToLoad(wait);
+
         driver.navigate().back();
+
+        allListsPage.waitForAllListsPageToLoad(wait);
 
         assertThat(allListsPage.firstListNameTextView.getText()).isEqualTo(listName);
     }
@@ -66,8 +82,8 @@ public class ShoppingListTest {
         allListsPage.createNewList("New list");
 
         ListPage listPage = new ListPage(driver);
-        listPage.waitForListPageToLoad()
-                .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build());
+        listPage.waitForListPageToLoad(wait)
+                .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build(), wait);
 
         assertThat(listPage.firstItemNameTextView.getText()).isEqualTo("Milk");
     }
@@ -78,8 +94,8 @@ public class ShoppingListTest {
         allListsPage.createNewList("New list");
 
         ListPage listPage = new ListPage(driver);
-        listPage.waitForListPageToLoad()
-                .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build())
+        listPage.waitForListPageToLoad(wait)
+                .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build(), wait)
                 .longPressOnFirstItem()
                 .clickOnEdit()
                 .enterComment("3% fat")
@@ -96,8 +112,8 @@ public class ShoppingListTest {
         allListsPage.createNewList("New list");
 
         ListPage listPage = new ListPage(driver);
-        listPage.waitForListPageToLoad()
-                .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build())
+        listPage.waitForListPageToLoad(wait)
+                .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build(), wait)
                 .longPressOnFirstItem()
                 .clickOnRemove().
                 confirmRemoval();
@@ -111,11 +127,10 @@ public class ShoppingListTest {
         allListsPage.createNewList("New list");
 
         ListPage listPage = new ListPage(driver);
-        listPage.waitForListPageToLoad()
-                .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build())
-                .addItemToList(Item.builder().name("Butter").price(3).amount(1).unitIndex(1).categoryIndex(2).build());
+        listPage.waitForListPageToLoad(wait)
+                .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build(), wait)
+                .addItemToList(Item.builder().name("Butter").price(3).amount(1).unitIndex(1).categoryIndex(2).build(), wait);
 
-        driver.hideKeyboard();
         driver.navigate().back();
 
         assertThat(allListsPage.firstListInformationTextView.getText()).contains("Sum: 5.4 £");

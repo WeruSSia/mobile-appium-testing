@@ -4,7 +4,10 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
 
 public class AllListsPage {
 
@@ -36,5 +39,10 @@ public class AllListsPage {
 
     public AllListsPage createNewList(String listName) {
         return this.enterNewListName(listName).clickCreateNewListButton();
+    }
+
+    public AllListsPage waitForAllListsPageToLoad(Wait wait){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("title")));
+        return this;
     }
 }
