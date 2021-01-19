@@ -24,8 +24,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class ShoppingListTest {
 
-    AndroidDriver<AndroidElement> driver;
-    Wait wait;
+    private AndroidDriver<AndroidElement> driver;
+    private Wait<AndroidDriver<AndroidElement>> wait;
 
     @BeforeClass
     public void setUp() throws MalformedURLException {
@@ -46,7 +46,7 @@ public class ShoppingListTest {
 
         driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
-        wait = new FluentWait(driver)
+        wait = new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(20))
                 .pollingEvery(Duration.ofMillis(250))
                 .ignoring(NoSuchElementException.class)
