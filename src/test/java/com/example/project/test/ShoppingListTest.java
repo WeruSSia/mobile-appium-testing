@@ -129,7 +129,7 @@ public class ShoppingListTest {
         ListPage listPage = new ListPage(driver);
         listPage.waitForListPageToLoad(wait)
                 .addItemToList(Item.builder().name("Milk").price(1.2).amount(2).unitIndex(4).categoryIndex(2).build(), wait)
-                .addItemToList(Item.builder().name("Butter").price(3).amount(1).unitIndex(1).categoryIndex(2).build(), wait);
+                .addItemToList(Item.builder().name("Butter").price(3.0).amount(1).unitIndex(1).categoryIndex(2).build(), wait);
 
         driver.navigate().back();
 

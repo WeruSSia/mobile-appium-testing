@@ -7,9 +7,9 @@ import lombok.Data;
 @Builder
 public class Item {
     private String name;
-    private double price;
-    private int amount;
-    private int unitIndex;
+    private Double price;
+    private Integer amount;
+    private Integer unitIndex;
     private String comment;
-    private int categoryIndex;
+    private Integer categoryIndex;
 }
