@@ -11,12 +11,7 @@ import org.openqa.selenium.support.ui.Wait;
 
 public class AllListsPage {
 
-    private AndroidDriver<AndroidElement> driver;
-
-    public AllListsPage(AndroidDriver<AndroidElement> driver) {
-        this.driver = driver;
-        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-    }
+    private final AndroidDriver<AndroidElement> driver;
 
     @AndroidFindBy(id = "editText1")
     private AndroidElement newListNameEditText;
@@ -26,6 +21,11 @@ public class AllListsPage {
     public AndroidElement firstListNameTextView;
     @AndroidFindBy(id = "str1")
     public AndroidElement firstListInformationTextView;
+
+    public AllListsPage(AndroidDriver<AndroidElement> driver) {
+        this.driver = driver;
+        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
 
     public AllListsPage enterNewListName(String newListName) {
         newListNameEditText.sendKeys(newListName);
@@ -41,7 +41,7 @@ public class AllListsPage {
         return this.enterNewListName(listName).clickCreateNewListButton();
     }
 
-    public AllListsPage waitForAllListsPageToLoad(Wait wait){
+    public AllListsPage waitForAllListsPageToLoad(Wait wait) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("title")));
         return this;
     }

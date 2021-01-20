@@ -9,23 +9,15 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import java.time.Duration;
 
 public class ListPage {
 
-    private AndroidDriver<AndroidElement> driver;
-
-    public ListPage(AndroidDriver<AndroidElement> driver) {
-        this.driver = driver;
-        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-    }
+    private final AndroidDriver<AndroidElement> driver;
 
     @AndroidFindBy(id = "editText1")
     private AndroidElement addItemEditText;
@@ -61,6 +53,11 @@ public class ListPage {
     private AndroidElement removeItemLinearLayout;
     @AndroidFindBy(id = "android:id/button1")
     private AndroidElement confirmRemovalButton;
+
+    public ListPage(AndroidDriver<AndroidElement> driver) {
+        this.driver = driver;
+        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
 
     public ListPage enterPrice(String price) {
         priceEditText.sendKeys(price);
@@ -98,7 +95,7 @@ public class ListPage {
     }
 
     public ListPage longPressOnFirstItem() {
-        new TouchAction(driver)
+        new TouchAction<>(driver)
                 .longPress(new LongPressOptions()
                         .withElement(ElementOption.element(firstItemRelativeLayout))
                         .withDuration(Duration.ofMillis(2000)))
